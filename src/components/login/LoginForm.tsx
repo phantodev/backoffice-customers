@@ -8,6 +8,8 @@ import React from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { login } from '@/actions/login/login'
+import { useRouter } from 'next/navigation'
 
 interface ILoginForm {
   email: string
@@ -31,6 +33,7 @@ const LoginSchema = z.object({
 })
 
 export default function LoginForm() {
+  const router = useRouter()
   const [showPassword, setShowPassword] = React.useState<boolean>(false)
 
   const {
@@ -41,7 +44,15 @@ export default function LoginForm() {
     resolver: zodResolver(LoginSchema),
   })
 
-  function handleLogin(data: ILoginForm) {
+  async function handleLogin(data: ILoginForm) {
+    try {
+      const response = await login(data.email, data.password)
+      localStorage.setItem('tokenCustomers', response.token)
+      router.push('/dashboard/customers/')
+      console.log(response)
+    } catch (error) {
+      console.log(error)
+    }
     console.log('Data para API: ', data)
   }
 
