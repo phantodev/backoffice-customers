@@ -14,11 +14,12 @@ import {
   maskCEP,
   validateCPF,
 } from '@/utils/utils'
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import createCustomer from '@/actions/customers/createCustomer'
 import { toast } from 'react-toastify'
 
 export default function CustomerAddForm() {
+  const queryClient = useQueryClient()
   const {
     register,
     handleSubmit,
@@ -85,6 +86,8 @@ export default function CustomerAddForm() {
       toast.success('Registro inserido!', {
         className: '!bg-success !text-white',
       })
+      queryClient.refetchQueries({ queryKey: ['list-customers'] })
+      //       queryClient.invalidateQueries({ queryKey: ['list-customers'] })
     },
     onError: (errors) => {
       console.log(errors)

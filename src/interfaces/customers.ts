@@ -1,4 +1,5 @@
 export interface ICustomer {
+  id: string
   name: string
   role: string
   status: string
@@ -8,4 +9,5 @@ export interface ICustomer {
   address: string
   state: string
   howMeet: string
+  actions: string
 }

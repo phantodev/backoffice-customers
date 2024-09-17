@@ -28,20 +28,6 @@
   },
   "customers": [
     {
-      "key": "1",
-      "name": "Tony Reichert",
-      "role": "CEO",
-      "status": "Active",
-      "id": "c9fb"
-    },
-    {
-      "key": "2",
-      "name": "Zoey Lang",
-      "role": "Technical Lead",
-      "status": "Paused",
-      "id": "c519"
-    },
-    {
       "key": "3",
       "name": "Jane Fisher",
       "role": "Senior Developer",
@@ -109,66 +95,6 @@
       "address": "Rua Angelina Turesso Cavalim",
       "state": "PR",
       "howMeet": "anuncio"
-    },
-    {
-      "id": "416b",
-      "active": false,
-      "name": "Eduardo",
-      "role": "Trabasdsddas",
-      "status": "sddassdasd",
-      "cpf": "032.924.479-50",
-      "cep": "81170-370",
-      "address": "Rua Angelina Turesso Cavalim",
-      "state": "PR",
-      "howMeet": "anuncio"
-    },
-    {
-      "id": "0f43",
-      "active": false,
-      "name": "Eduardo",
-      "role": "Trabasdsddas",
-      "status": "sddassdasd",
-      "cpf": "032.924.479-50",
-      "cep": "81170-370",
-      "address": "Rua Angelina Turesso Cavalim",
-      "state": "PR",
-      "howMeet": "anuncio"
-    },
-    {
-      "id": "ad4b",
-      "active": true,
-      "name": "Carlos Eduardo Marçal Burko",
-      "role": "Senior",
-      "status": "Trabalhando",
-      "cpf": "032.924.479-50",
-      "cep": "81170-370",
-      "address": "Rua Angelina Turesso Cavalim",
-      "state": "PR",
-      "howMeet": "anuncio"
-    },
-    {
-      "id": "d15b",
-      "active": true,
-      "name": "Carlos Eduardo Marçal Burko",
-      "role": "Seniotr",
-      "status": "Trabalhando",
-      "cpf": "032.924.479-50",
-      "cep": "81170-370",
-      "address": "Rua Angelina Turesso Cavalim",
-      "state": "PR",
-      "howMeet": "internet"
-    },
-    {
-      "id": "be5e",
-      "howMeet": "internet",
-      "active": true,
-      "name": "Carlos Eduardo Marçal Burko",
-      "role": "Senior",
-      "status": "Trabalhando",
-      "cpf": "032.924.479-50",
-      "cep": "81170-370",
-      "address": "Rua Angelina Turesso Cavalim",
-      "state": "PR"
     }
   ],
   "login": {
