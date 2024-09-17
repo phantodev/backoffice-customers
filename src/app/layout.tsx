@@ -27,7 +27,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`dark h-screen flex ${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`dark min-h-screen flex ${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <ReactQueryProvider>{children}</ReactQueryProvider>
       </body>

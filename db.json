@@ -10,6 +10,38 @@
   "profile": {
     "name": "typicode"
   },
+  "customers": [
+    {
+      "key": "1",
+      "name": "Tony Reichert",
+      "role": "CEO",
+      "status": "Active"
+    },
+    {
+      "key": "2",
+      "name": "Zoey Lang",
+      "role": "Technical Lead",
+      "status": "Paused"
+    },
+    {
+      "key": "3",
+      "name": "Jane Fisher",
+      "role": "Senior Developer",
+      "status": "Active"
+    },
+    {
+      "key": "4",
+      "name": "William Howard",
+      "role": "Community Manager",
+      "status": "Vacation"
+    },
+    {
+        "key": "5",
+        "name": "Eduardo Burko",
+        "role": "Community Manager",
+        "status": "Vacation"
+      }
+  ],
   "login": {
     "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiZW1haWwiOiJlZHVAZWR1LmNvbSIsInBlcm1pc3Npb24iOiJhZG1pbmlzdHJhdG9yIiwiaWF0IjoxNTE2MjM5MDIyfQ.LHZQYrLjWKFh54EnHI4_F__uEVEgcIAeqzvviztfhmY"
   }

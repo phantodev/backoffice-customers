@@ -14,6 +14,13 @@ import { Image } from '@nextui-org/image'
 import { useQuery } from '@tanstack/react-query'
 import { getAllCustomers } from '@/actions/customers/getAllCustomers'
 
+interface ICustomers {
+  key: string
+  name: string
+  role: string
+  status: string
+}
+
 const rows = [
   {
     key: '1',
@@ -57,17 +64,29 @@ const columns = [
 ]
 
 export default function CustomersTableList() {
-  const { data, isLoading, error } = useQuery({
+  const { data, isLoading, error } = useQuery<ICustomers[]>({
     queryKey: ['list-customers'],
     queryFn: getAllCustomers,
+    //     staleTime: 60000,
+    //     gcTime: 60000,
+    refetchOnWindowFocus: true,
   })
+
+  if (isLoading) {
+    return <section>Carregando dados...</section>
+  }
+
+  if (error) {
+    return <section>Erro ao carregar dados...</section>
+  }
+
   return (
     <Table aria-label="Example table with dynamic content">
       <TableHeader columns={columns}>
         {(column) => <TableColumn key={column.key}>{column.label}</TableColumn>}
       </TableHeader>
       <TableBody
-        items={rows}
+        items={data}
         emptyContent={
           <section className="w-full flex justify-center">
             <Image width={100} alt="Logo Nextjs" src="/assets/no-data.png" />

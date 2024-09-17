@@ -15,6 +15,8 @@
     "@nextui-org/card": "^2.0.33",
     "@nextui-org/image": "^2.0.31",
     "@nextui-org/input": "^2.2.4",
+    "@nextui-org/select": "^2.2.7",
+    "@nextui-org/switch": "^2.0.34",
     "@nextui-org/system": "^2.2.5",
     "@nextui-org/table": "^2.0.39",
     "@nextui-org/theme": "^2.2.9",
@@ -31,6 +33,7 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@hookform/devtools": "^4.3.1",
     "@rocketseat/eslint-config": "^2.2.2",
     "@types/node": "^20",
     "@types/react": "^18",
