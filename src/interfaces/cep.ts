@@ -33,7 +33,6 @@ export interface IViaCEP {
     | 'SP'
     | 'SE'
     | 'TO'
-    | null
   ibge: string
   gia: string
   ddd: string

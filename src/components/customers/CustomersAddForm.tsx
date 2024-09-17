@@ -8,18 +8,31 @@ import { useForm, Controller } from 'react-hook-form'
 import { DevTool } from '@hookform/devtools'
 import { ICustomer } from '@/interfaces/customers'
 import React from 'react'
-import { getAddressByCEP, maskCEP } from '@/utils/utils'
+import {
+  formatDocument,
+  getAddressByCEP,
+  maskCEP,
+  validateCPF,
+} from '@/utils/utils'
+import { useMutation } from '@tanstack/react-query'
+import createCustomer from '@/actions/customers/createCustomer'
+import { toast } from 'react-toastify'
 
 export default function CustomerAddForm() {
   const {
     register,
     handleSubmit,
     setValue,
+    setError,
+    reset,
     watch,
     control,
     formState: { errors },
   } = useForm<ICustomer>({
     mode: 'onChange',
+    defaultValues: {
+      howMeet: '',
+    },
   })
 
   //   const howMeet = watch('howMeet')
@@ -29,11 +42,10 @@ export default function CustomerAddForm() {
   //   console.log('HOW MEET: ', howMeet)
 
   async function handleAddCustomer(data: ICustomer) {
-    console.log(data)
+    mutation.mutate(data)
   }
 
   function handleCEPChange(event: React.ChangeEvent<HTMLInputElement>) {
-    console.log(event.target.value)
     const maskedValue = maskCEP(event.target.value)
     setValue('cep', maskedValue)
     if (maskedValue.length === 9) {
@@ -47,11 +59,40 @@ export default function CustomerAddForm() {
 
       if ('localidade' in response) {
         setValue('address', response.logradouro)
+        setValue('state', response.uf)
       } else {
         throw new Error('CEP não encontrado')
       }
     } catch (error) {}
   }
+
+  function handleCPFVerification(event: React.ChangeEvent<HTMLInputElement>) {
+    const maskedValue = formatDocument('CPF', event.target.value)
+    setValue('cpf', maskedValue)
+    if (maskedValue.length === 14 && !validateCPF(maskedValue)) {
+      setError('cpf', { type: 'manual', message: 'CPF Inválido' })
+    }
+  }
+
+  const mutation = useMutation({
+    mutationFn: async (data: ICustomer) => {
+      await createCustomer(data)
+    },
+    onSuccess: () => {
+      reset()
+      setValue('cpf', '')
+      setValue('cep', '')
+      toast.success('Registro inserido!', {
+        className: '!bg-success !text-white',
+      })
+    },
+    onError: (errors) => {
+      console.log(errors)
+      toast.error('Erro na API!', {
+        className: '!bg-danger !text-white',
+      })
+    },
+  })
 
   return (
     <>
@@ -81,12 +122,24 @@ export default function CustomerAddForm() {
           errorMessage={errors.status?.message}
           {...register('status', { required: 'Campo Obrigatório' })}
         />
-        <Input
-          label="CPF"
-          isInvalid={!!errors.cpf}
-          errorMessage={errors.cpf?.message}
-          {...register('cpf', { required: 'Campo Obrigatório' })}
+        <Controller
+          name="cpf"
+          control={control}
+          render={({ field }) => (
+            <Input
+              {...field}
+              label="CPF"
+              maxLength={14}
+              isInvalid={!!errors.cpf}
+              errorMessage={errors.cpf?.message}
+              onChange={(event) => {
+                field.onChange(event)
+                handleCPFVerification(event)
+              }}
+            />
+          )}
         />
+
         <Controller
           name="cep"
           control={control}
@@ -110,7 +163,7 @@ export default function CustomerAddForm() {
           control={control}
           render={({ field }) => (
             <Input
-              //       {...field}
+              {...field}
               value={address}
               label="Endereço"
               isInvalid={!!errors.address}
@@ -118,12 +171,19 @@ export default function CustomerAddForm() {
             />
           )}
         />
-        <Input
-          label="Estado"
-          isInvalid={!!errors.state}
-          errorMessage={errors.state?.message}
-          {...register('state', { required: 'Campo Obrigatório' })}
+        <Controller
+          name="state"
+          control={control}
+          render={({ field }) => (
+            <Input
+              {...field}
+              label="Estado"
+              isInvalid={!!errors.state}
+              errorMessage={errors.state?.message}
+            />
+          )}
         />
+
         <Controller
           name="howMeet"
           control={control}

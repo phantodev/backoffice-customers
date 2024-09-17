@@ -217,3 +217,61 @@ export const formatCurrencyFromBackend = (value: string): string => {
     maximumFractionDigits: 2,
   })
 }
+
+export function validateCPF(cpf: string): boolean {
+  // Remove caracteres não numéricos do CPF
+  const cleanCPF = cpf.replace(/[^\d]/g, '')
+
+  // Verifica se o CPF tem 11 dígitos
+  if (
+    cleanCPF.length !== 11 ||
+    cleanCPF === '00000000000' ||
+    cleanCPF === '11111111111' ||
+    cleanCPF === '22222222222' ||
+    cleanCPF === '33333333333' ||
+    cleanCPF === '44444444444' ||
+    cleanCPF === '55555555555' ||
+    cleanCPF === '66666666666' ||
+    cleanCPF === '77777777777' ||
+    cleanCPF === '88888888888' ||
+    cleanCPF === '99999999999'
+  ) {
+    return false
+  }
+
+  // Verifica se todos os dígitos são iguais (ex: 111.111.111-11)
+  if (/^(\d)\1{10}$/.test(cleanCPF)) {
+    return false
+  }
+
+  // Calcula o primeiro dígito verificador
+  let sum = 0
+
+  for (let i = 0; i < 9; i++) {
+    sum += parseInt(cleanCPF.charAt(i)) * (10 - i)
+  }
+  let remainder = 11 - (sum % 11)
+
+  if (remainder === 10 || remainder === 11) {
+    remainder = 0
+  }
+  if (remainder !== parseInt(cleanCPF.charAt(9))) {
+    return false
+  }
+
+  // Calcula o segundo dígito verificador
+  sum = 0
+  for (let i = 0; i < 10; i++) {
+    sum += parseInt(cleanCPF.charAt(i)) * (11 - i)
+  }
+  remainder = 11 - (sum % 11)
+  if (remainder === 10 || remainder === 11) {
+    remainder = 0
+  }
+  if (remainder !== parseInt(cleanCPF.charAt(10))) {
+    return false
+  }
+
+  // CPF válido
+  return true
+}
