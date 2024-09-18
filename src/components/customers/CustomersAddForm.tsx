@@ -4,8 +4,8 @@ import { Select, SelectItem } from '@nextui-org/select'
 import { Input } from '@nextui-org/input'
 import { Button } from '@nextui-org/button'
 import { Switch } from '@nextui-org/switch'
-import { useForm, Controller } from 'react-hook-form'
-import { DevTool } from '@hookform/devtools'
+import { useForm, Controller, useWatch } from 'react-hook-form'
+// import { DevTool } from '@hookform/devtools'
 import { ICustomer } from '@/interfaces/customers'
 import React from 'react'
 import {
@@ -17,8 +17,12 @@ import {
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import createCustomer from '@/actions/customers/createCustomer'
 import { toast } from 'react-toastify'
+import { useCustomerStore } from '@/stores/customerStore'
+import { TStatus } from '@/interfaces/global'
+import updateCustomer from '@/actions/customers/updateCustomer'
 
 export default function CustomerAddForm() {
+  const customerStore = useCustomerStore()
   const queryClient = useQueryClient()
   const {
     register,
@@ -32,11 +36,24 @@ export default function CustomerAddForm() {
   } = useForm<ICustomer>({
     mode: 'onChange',
     defaultValues: {
-      howMeet: '',
+      active: customerStore.customer ? customerStore.customer.active : false,
+      howMeet: customerStore.customer ? customerStore.customer.howMeet : '',
+      status: customerStore.customer ? customerStore.customer.status : '',
+      role: customerStore.customer ? customerStore.customer.role : '',
+      name: customerStore.customer ? customerStore.customer.name : '',
+      address: customerStore.customer ? customerStore.customer.address : '',
+      state: customerStore.customer ? customerStore.customer.state : '',
+      cpf: customerStore.customer ? customerStore.customer.cpf : '',
+      cep: customerStore.customer ? customerStore.customer.cep : '',
     },
   })
+  const [status, setStatus] = React.useState<TStatus>('IDLE')
 
   //   const howMeet = watch('howMeet')
+
+  const formValue = useWatch({
+    control,
+  })
 
   const address = watch('address')
 
@@ -77,15 +94,26 @@ export default function CustomerAddForm() {
 
   const mutation = useMutation({
     mutationFn: async (data: ICustomer) => {
-      await createCustomer(data)
+      setStatus('LOADING')
+      if (customerStore.customer) {
+        await updateCustomer(customerStore.customer.id, data)
+      } else {
+        await createCustomer(data)
+      }
     },
     onSuccess: () => {
       reset()
       setValue('cpf', '')
       setValue('cep', '')
-      toast.success('Registro inserido!', {
-        className: '!bg-success !text-white',
-      })
+      setValue('address', '')
+      setValue('state', '')
+      customerStore.setCustomer(null)
+      toast.success(
+        `Registro ${customerStore.customer ? 'atualizado' : 'inserido'}!`,
+        {
+          className: '!bg-success !text-white',
+        },
+      )
       queryClient.refetchQueries({ queryKey: ['list-customers'] })
       //       queryClient.invalidateQueries({ queryKey: ['list-customers'] })
     },
@@ -95,7 +123,21 @@ export default function CustomerAddForm() {
         className: '!bg-danger !text-white',
       })
     },
+    onSettled: () => {
+      setStatus('IDLE')
+    },
   })
+
+  //   React.useEffect(() => {
+  //     console.log(customerStore.customer)
+  //     if (customerStore.customer) {
+  //       setValue('cpf', customerStore.customer.cpf)
+  //     }
+  //   }, [customerStore, setValue])
+
+  React.useEffect(() => {
+    console.tron.log('Form: ', formValue)
+  }, [formValue])
 
   return (
     <>
@@ -193,9 +235,16 @@ export default function CustomerAddForm() {
           rules={{ required: 'Campo Obrigatório' }}
           render={({ field }) => (
             <Select
+              //       {...field}
               label="Como nos conheceu"
               isInvalid={!!errors.howMeet}
               errorMessage={errors.howMeet?.message}
+              //       selectedKeys={
+              //         customerStore.customer ? [customerStore.customer?.howMeet] : []
+              //       }
+              //       defaultSelectedKeys={
+              //         customerStore.customer ? [customerStore.customer?.howMeet] : []
+              //       }
               onSelectionChange={(keys) => {
                 field.onChange(Array.from(keys)[0])
               }}
@@ -207,11 +256,18 @@ export default function CustomerAddForm() {
             </Select>
           )}
         />
-        <Button type="submit" color="primary">
-          Enviar
+        <Button
+          type="submit"
+          color="primary"
+          fullWidth
+          size="lg"
+          isDisabled={status === 'LOADING'}
+          isLoading={status === 'LOADING'}
+        >
+          {status !== 'LOADING' ? 'Enviar' : ''}
         </Button>
       </form>
-      <DevTool control={control} />
+      {/* <DevTool control={control} /> */}
     </>
   )
 }

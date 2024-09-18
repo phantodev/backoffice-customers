@@ -2,6 +2,7 @@
 
 import { Button } from '@nextui-org/button'
 import { useRouter } from 'next/navigation'
+import '@/configs/reactotron'
 
 export default function NavBar() {
   const router = useRouter()

@@ -18,8 +18,12 @@ import deleteCustomer from '@/actions/customers/deleteCustomer'
 import { toast } from 'react-toastify'
 import { TStatus } from '@/interfaces/global'
 import { Spinner } from '@nextui-org/spinner'
+import { useCustomerStore } from '@/stores/customerStore'
+import { useRouter } from 'next/navigation'
 
-const columns = [
+type ColumnKey = keyof ICustomer
+
+const columns: { key: ColumnKey; label: string }[] = [
   {
     key: 'name',
     label: 'NAME',
@@ -39,6 +43,8 @@ const columns = [
 ]
 
 export default function CustomersTableList() {
+  const customerStore = useCustomerStore()
+  const router = useRouter()
   const queryClient = useQueryClient()
   const [status, setStatus] = React.useState<TStatus>('IDLE')
   const { data, isLoading, error } = useQuery<ICustomer[]>({
@@ -79,7 +85,15 @@ export default function CustomersTableList() {
         case 'actions':
           return (
             <section className="flex gap-4">
-              <PencilSimple size={20} />
+              <button
+                onClick={() => {
+                  //   console.tron.log(customer)
+                  customerStore.setCustomer(item)
+                  router.push('/dashboard/customers/add')
+                }}
+              >
+                <PencilSimple size={20} />
+              </button>
               <button onClick={() => mutation.mutate(item.id)}>
                 <Trash size={20} />
               </button>
@@ -88,8 +102,12 @@ export default function CustomersTableList() {
       }
       return cellValue
     },
-    [mutation],
+    [mutation, customerStore, router],
   )
+
+  //   React.useEffect(() => {
+  //     console.tron.log(customerStore.customer)
+  //   }, [customerStore])
 
   if (isLoading) {
     return <section>Carregando dados...</section>
@@ -128,7 +146,9 @@ export default function CustomersTableList() {
           {(item) => (
             <TableRow key={item.id}>
               {(columnKey) => (
-                <TableCell>{renderCell(item, columnKey)}</TableCell>
+                <TableCell>
+                  {renderCell(item, columnKey as ColumnKey)}
+                </TableCell>
               )}
             </TableRow>
           )}

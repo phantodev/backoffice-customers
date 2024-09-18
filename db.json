@@ -95,6 +95,30 @@
       "address": "Rua Angelina Turesso Cavalim",
       "state": "PR",
       "howMeet": "anuncio"
+    },
+    {
+      "id": "1f70",
+      "active": true,
+      "howMeet": "anuncio",
+      "status": "Trabalhando",
+      "role": "Pleno",
+      "name": "Eduardo Burko",
+      "address": "Rua Angelina Turesso Cavalim",
+      "state": "PR",
+      "cpf": "032.924.479-50",
+      "cep": "81170-370"
+    },
+    {
+      "id": "9f9e",
+      "active": false,
+      "howMeet": "amigo",
+      "status": "Trabalhando",
+      "role": "Senior",
+      "name": "Eduardo Burko",
+      "address": "Rua Angelina Turesso Cavalim",
+      "state": "PR",
+      "cpf": "032.924.479-50",
+      "cep": "81170-370"
     }
   ],
   "login": {
