@@ -10,6 +10,7 @@ export interface ICustomer {
   state: string
   howMeet: string
   actions: string
+  whoIndicate: string
 }
 
 export interface IResultPaginated {
