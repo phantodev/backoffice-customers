@@ -11,3 +11,13 @@ export interface ICustomer {
   howMeet: string
   actions: string
 }
+
+export interface IResultPaginated {
+  first: number
+  prev: number | null
+  next: number | null
+  last: number
+  pages: number
+  items: number
+  data: ICustomer[]
+}
