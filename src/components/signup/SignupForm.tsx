@@ -8,15 +8,19 @@ import React from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { login } from '@/actions/login/login'
 import { useRouter } from 'next/navigation'
+import '@/configs/reactotron'
+import { useSupabase } from '@/hooks/useSupabase'
+import { toast } from 'react-toastify'
 
-interface ILoginForm {
+interface ISignUpForm {
+  name: string
   email: string
   password: string
 }
 
-const LoginSchema = z.object({
+const SignupSchema = z.object({
+  name: z.string().min(3, { message: 'Mínimo 3 caracteres' }),
   email: z.string().email({ message: 'E-mail inválido' }),
   password: z
     .string()
@@ -32,28 +36,29 @@ const LoginSchema = z.object({
     }),
 })
 
-export default function LoginForm() {
+export default function SignupForm() {
   const router = useRouter()
+  const { handleSupabaseSignup } = useSupabase()
   const [showPassword, setShowPassword] = React.useState<boolean>(false)
 
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
-  } = useForm<ILoginForm>({
-    resolver: zodResolver(LoginSchema),
+  } = useForm<ISignUpForm>({
+    resolver: zodResolver(SignupSchema),
   })
 
-  async function handleLogin(data: ILoginForm) {
+  async function handleSignup(data: ISignUpForm) {
     try {
-      const response = await login(data.email, data.password)
-      localStorage.setItem('tokenCustomers', response.token)
-      router.push('/dashboard/customers/')
-      console.log(response)
+      const response = await handleSupabaseSignup(data.email, data.password)
+      console.tron.log(response)
+      toast.success('Cadastro efetuado com sucesso!')
+      reset()
     } catch (error) {
       console.log(error)
     }
-    console.log('Data para API: ', data)
   }
 
   React.useEffect(() => {
@@ -64,12 +69,21 @@ export default function LoginForm() {
     <Card className="bg-zinc-900 w-96 p-4">
       <CardBody>
         <p className="text-2xl font-semibold">
-          <Smiley /> Autenticação
+          <Smiley /> Cadastro
         </p>
         <form
-          onSubmit={handleSubmit((data: ILoginForm) => handleLogin(data))}
+          onSubmit={handleSubmit((data: ISignUpForm) => handleSignup(data))}
           className="flex flex-col gap-4 mt-4"
         >
+          <Input
+            size="lg"
+            type="text"
+            label="Nome"
+            isInvalid={!!errors.name}
+            errorMessage={errors.name?.message}
+            placeholder="Digite seu nome"
+            {...register('name', { required: 'Campo obrigatório' })}
+          />
           <Input
             size="lg"
             type="email"
@@ -94,16 +108,16 @@ export default function LoginForm() {
             }
           />
           <Button type="submit" size="lg" fullWidth>
-            Fazer login
+            Cadastrar
+          </Button>
+          <Button
+            className="mt-6"
+            variant="light"
+            onClick={() => router.push('/')}
+          >
+            Já tenho cadastro
           </Button>
         </form>
-        <Button
-          className="mt-6"
-          variant="light"
-          onClick={() => router.push('/signup')}
-        >
-          Quero me cadastrar
-        </Button>
       </CardBody>
     </Card>
   )

@@ -67,6 +67,13 @@ export default function CustomersTableList() {
     placeholderData: (previousData) => previousData,
   })
 
+  useQuery<ICustomer[]>({
+    queryKey: ['list-customers'],
+    queryFn: () => getAllCustomers(),
+    staleTime: 60000,
+    gcTime: 60000,
+  })
+
   const updateURLState = React.useCallback(
     (newPage: number, newPerPage: string) => {
       console.tron.log('ENTROU NO URL STATE')

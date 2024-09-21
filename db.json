@@ -27,286 +27,52 @@
     "name": "typicode"
   },
   "customers": [
-    {
-      "key": "3",
-      "name": "Jane Fisher",
-      "role": "Senior Developer",
-      "status": "Active",
-      "id": "9955"
-    },
-    {
-      "key": "4",
-      "name": "William Howard",
-      "role": "Community Manager",
-      "status": "Vacation",
-      "id": "1e81"
-    },
-    {
-      "key": "5",
-      "name": "Eduardo Burko",
-      "role": "Community Manager",
-      "status": "Vacation",
-      "id": "aa5b"
-    },
-    {
-      "id": "e588",
-      "active": true,
-      "name": "Eduardo",
-      "role": "PRogramador",
-      "status": "Trabakhando",
-      "cpf": "032.924.479-50",
-      "cep": "81170-370",
-      "address": "Rua Angelina Turesso Cavalim",
-      "state": "PR",
-      "howMeet": "anuncio"
-    },
-    {
-      "id": "c709",
-      "active": true,
-      "name": "José Silva",
-      "role": "Financeiro",
-      "status": "Trbaalhando",
-      "cpf": "032.924.479-50",
-      "cep": "81170-370",
-      "address": "Rua Angelina Turesso Cavalim",
-      "state": "PR",
-      "howMeet": "anuncio"
-    },
-    {
-      "id": "6ce5",
-      "active": true,
-      "name": "José Silva",
-      "role": "Financeiro",
-      "status": "Trbaalhando",
-      "cpf": "032.924.479-50",
-      "cep": "81170-370",
-      "address": "Rua Angelina Turesso Cavalim",
-      "state": "PR",
-      "howMeet": "anuncio"
-    },
-    {
-      "id": "3382",
-      "active": true,
-      "name": "Carlos Eduardo Marçal Burko",
-      "role": "Seniotr",
-      "status": "Trabalhando",
-      "cpf": "032.924.479-50",
-      "cep": "81170-370",
-      "address": "Rua Angelina Turesso Cavalim",
-      "state": "PR",
-      "howMeet": "anuncio"
-    },
-    {
-      "id": "1f70",
-      "active": true,
-      "howMeet": "anuncio",
-      "status": "Trabalhando",
-      "role": "Pleno",
-      "name": "Eduardo Burko",
-      "address": "Rua Angelina Turesso Cavalim",
-      "state": "PR",
-      "cpf": "032.924.479-50",
-      "cep": "81170-370"
-    },
-    {
-      "id": "9f9e",
-      "active": false,
-      "howMeet": "amigo",
-      "status": "Trabalhando",
-      "role": "Senior",
-      "name": "Eduardo Burko",
-      "address": "Rua Angelina Turesso Cavalim",
-      "state": "PR",
-      "cpf": "032.924.479-50",
-      "cep": "81170-370"
-    },
-    {
-        "key": "3",
-        "name": "Jane Fisher",
-        "role": "Senior Developer",
-        "status": "Active",
-        "id": "9955"
-      },
-      {
-        "key": "4",
-        "name": "William Howard",
-        "role": "Community Manager",
-        "status": "Vacation",
-        "id": "1e81"
-      },
-      {
-        "key": "5",
-        "name": "Eduardo Burko",
-        "role": "Community Manager",
-        "status": "Vacation",
-        "id": "aa5b"
-      },
-      {
-        "id": "e588",
-        "active": true,
-        "name": "Eduardo",
-        "role": "PRogramador",
-        "status": "Trabakhando",
-        "cpf": "032.924.479-50",
-        "cep": "81170-370",
-        "address": "Rua Angelina Turesso Cavalim",
-        "state": "PR",
-        "howMeet": "anuncio"
-      },
-      {
-        "id": "c709",
-        "active": true,
-        "name": "José Silva",
-        "role": "Financeiro",
-        "status": "Trbaalhando",
-        "cpf": "032.924.479-50",
-        "cep": "81170-370",
-        "address": "Rua Angelina Turesso Cavalim",
-        "state": "PR",
-        "howMeet": "anuncio"
-      },
-      {
-        "id": "6ce5",
-        "active": true,
-        "name": "José Silva",
-        "role": "Financeiro",
-        "status": "Trbaalhando",
-        "cpf": "032.924.479-50",
-        "cep": "81170-370",
-        "address": "Rua Angelina Turesso Cavalim",
-        "state": "PR",
-        "howMeet": "anuncio"
-      },
-      {
-        "id": "3382",
-        "active": true,
-        "name": "Carlos Eduardo Marçal Burko",
-        "role": "Seniotr",
-        "status": "Trabalhando",
-        "cpf": "032.924.479-50",
-        "cep": "81170-370",
-        "address": "Rua Angelina Turesso Cavalim",
-        "state": "PR",
-        "howMeet": "anuncio"
-      },
-      {
-        "id": "1f70",
-        "active": true,
-        "howMeet": "anuncio",
-        "status": "Trabalhando",
-        "role": "Pleno",
-        "name": "Eduardo Burko",
-        "address": "Rua Angelina Turesso Cavalim",
-        "state": "PR",
-        "cpf": "032.924.479-50",
-        "cep": "81170-370"
-      },
-      {
-        "id": "9f9e",
-        "active": false,
-        "howMeet": "amigo",
-        "status": "Trabalhando",
-        "role": "Senior",
-        "name": "Eduardo Burko",
-        "address": "Rua Angelina Turesso Cavalim",
-        "state": "PR",
-        "cpf": "032.924.479-50",
-        "cep": "81170-370"
-      },
-      {
-        "key": "3",
-        "name": "Jane Fisher",
-        "role": "Senior Developer",
-        "status": "Active",
-        "id": "9955"
-      },
-      {
-        "key": "4",
-        "name": "William Howard",
-        "role": "Community Manager",
-        "status": "Vacation",
-        "id": "1e81"
-      },
-      {
-        "key": "5",
-        "name": "Eduardo Burko",
-        "role": "Community Manager",
-        "status": "Vacation",
-        "id": "aa5b"
-      },
-      {
-        "id": "e588",
-        "active": true,
-        "name": "Eduardo",
-        "role": "PRogramador",
-        "status": "Trabakhando",
-        "cpf": "032.924.479-50",
-        "cep": "81170-370",
-        "address": "Rua Angelina Turesso Cavalim",
-        "state": "PR",
-        "howMeet": "anuncio"
-      },
-      {
-        "id": "c709",
-        "active": true,
-        "name": "José Silva",
-        "role": "Financeiro",
-        "status": "Trbaalhando",
-        "cpf": "032.924.479-50",
-        "cep": "81170-370",
-        "address": "Rua Angelina Turesso Cavalim",
-        "state": "PR",
-        "howMeet": "anuncio"
-      },
-      {
-        "id": "6ce5",
-        "active": true,
-        "name": "José Silva",
-        "role": "Financeiro",
-        "status": "Trbaalhando",
-        "cpf": "032.924.479-50",
-        "cep": "81170-370",
-        "address": "Rua Angelina Turesso Cavalim",
-        "state": "PR",
-        "howMeet": "anuncio"
-      },
-      {
-        "id": "3382",
-        "active": true,
-        "name": "Carlos Eduardo Marçal Burko",
-        "role": "Seniotr",
-        "status": "Trabalhando",
-        "cpf": "032.924.479-50",
-        "cep": "81170-370",
-        "address": "Rua Angelina Turesso Cavalim",
-        "state": "PR",
-        "howMeet": "anuncio"
-      },
-      {
-        "id": "1f70",
-        "active": true,
-        "howMeet": "anuncio",
-        "status": "Trabalhando",
-        "role": "Pleno",
-        "name": "Eduardo Burko",
-        "address": "Rua Angelina Turesso Cavalim",
-        "state": "PR",
-        "cpf": "032.924.479-50",
-        "cep": "81170-370"
-      },
-      {
-        "id": "9f9e",
-        "active": false,
-        "howMeet": "amigo",
-        "status": "Trabalhando",
-        "role": "Senior",
-        "name": "Eduardo Burko",
-        "address": "Rua Angelina Turesso Cavalim",
-        "state": "PR",
-        "cpf": "032.924.479-50",
-        "cep": "81170-370"
-      }
-  ],
+        {
+          "key": "3",
+          "name": "Jane Fisher",
+          "role": "Senior Developer",
+          "status": "Active",
+          "id": "f47ac10b-58cc-4372-a567-0e02b2c3d479"
+        },
+        {
+          "key": "4",
+          "name": "William Howard",
+          "role": "Community Manager",
+          "status": "Vacation",
+          "id": "7f8d35a2-9c29-4f4c-b2e9-8c5f3c9d1a5b"
+        },
+        {
+          "key": "5",
+          "name": "Eduardo Burko",
+          "role": "Community Manager",
+          "status": "Vacation",
+          "id": "3e7c3f6d-9c5a-4b7d-8e2f-1d2c3a4b5e6f"
+        },
+        {
+          "id": "9d8e7f6a-5b4c-3d2e-1f0a-9b8c7d6e5f4a",
+          "active": true,
+          "name": "Eduardo",
+          "role": "PRogramador",
+          "status": "Trabakhando",
+          "cpf": "032.924.479-50",
+          "cep": "81170-370",
+          "address": "Rua Angelina Turesso Cavalim",
+          "state": "PR",
+          "howMeet": "anuncio"
+        },
+        {
+          "id": "2a1b3c4d-5e6f-7g8h-9i0j-1k2l3m4n5o6p",
+          "active": true,
+          "name": "José Silva",
+          "role": "Financeiro",
+          "status": "Trbaalhando",
+          "cpf": "032.924.479-50",
+          "cep": "81170-370",
+          "address": "Rua Angelina Turesso Cavalim",
+          "state": "PR",
+          "howMeet": "anuncio"
+        }
+      ],
   "login": {
     "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiZW1haWwiOiJlZHVAZWR1LmNvbSIsInBlcm1pc3Npb24iOiJhZG1pbmlzdHJhdG9yIiwiaWF0IjoxNTE2MjM5MDIyfQ.LHZQYrLjWKFh54EnHI4_F__uEVEgcIAeqzvviztfhmY"
   }

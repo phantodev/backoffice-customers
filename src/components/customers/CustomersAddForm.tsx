@@ -14,13 +14,16 @@ import {
   maskCEP,
   validateCPF,
 } from '@/utils/utils'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
-import createCustomer from '@/actions/customers/createCustomer'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+// import createCustomer from '@/actions/customers/createCustomer'
 import { toast } from 'react-toastify'
 import { useCustomerStore } from '@/stores/customerStore'
 import { TStatus } from '@/interfaces/global'
 import updateCustomer from '@/actions/customers/updateCustomer'
-import { Autocomplete, AutocompleteItem } from '@nextui-org/autocomplete'
+// import { Autocomplete, AutocompleteItem } from '@nextui-org/autocomplete'
+import { getAllCustomers } from '@/actions/customers/getAllCustomers'
+import createCustomerSupabase from '@/actions/customers/createCustomerSupabase'
+import AutocompleteCustom from '../common/AutcompleteCustom'
 
 export default function CustomerAddForm() {
   const customerStore = useCustomerStore()
@@ -50,66 +53,10 @@ export default function CustomerAddForm() {
   })
   const [status, setStatus] = React.useState<TStatus>('IDLE')
 
-  const animals = [
-    {
-      label: 'Cat',
-      value: 'cat',
-      description: 'The second most popular pet in the world',
-    },
-    {
-      label: 'Dog',
-      value: 'dog',
-      description: 'The most popular pet in the world',
-    },
-    {
-      label: 'Elephant',
-      value: 'elephant',
-      description: 'The largest land animal',
-    },
-    { label: 'Lion', value: 'lion', description: 'The king of the jungle' },
-    { label: 'Tiger', value: 'tiger', description: 'The largest cat species' },
-    {
-      label: 'Giraffe',
-      value: 'giraffe',
-      description: 'The tallest land animal',
-    },
-    {
-      label: 'Dolphin',
-      value: 'dolphin',
-      description: 'A widely distributed and diverse group of aquatic mammals',
-    },
-    {
-      label: 'Penguin',
-      value: 'penguin',
-      description: 'A group of aquatic flightless birds',
-    },
-    {
-      label: 'Zebra',
-      value: 'zebra',
-      description: 'A several species of African equids',
-    },
-    {
-      label: 'Shark',
-      value: 'shark',
-      description:
-        'A group of elasmobranch fish characterized by a cartilaginous skeleton',
-    },
-    {
-      label: 'Whale',
-      value: 'whale',
-      description: 'Diverse group of fully aquatic placental marine mammals',
-    },
-    {
-      label: 'Otter',
-      value: 'otter',
-      description: 'A carnivorous mammal in the subfamily Lutrinae',
-    },
-    {
-      label: 'Crocodile',
-      value: 'crocodile',
-      description: 'A large semiaquatic reptile',
-    },
-  ]
+  const { data, isLoading } = useQuery<ICustomer[]>({
+    queryKey: ['list-customers'],
+    queryFn: () => getAllCustomers(),
+  })
 
   //   const howMeet = watch('howMeet')
 
@@ -160,7 +107,8 @@ export default function CustomerAddForm() {
       if (customerStore.customer) {
         await updateCustomer(customerStore.customer.id, data)
       } else {
-        await createCustomer(data)
+        // await createCustomer(data)
+        await createCustomerSupabase(data)
       }
     },
     onSuccess: () => {
@@ -196,6 +144,14 @@ export default function CustomerAddForm() {
   //       setValue('cpf', customerStore.customer.cpf)
   //     }
   //   }, [customerStore, setValue])
+
+  function handleAutocompleteCustom(key: React.Key | null) {
+    const whoIndicate = data?.filter((item) => item.id === String(key))
+    setValue(
+      'whoIndicate',
+      whoIndicate && whoIndicate?.length > 0 ? whoIndicate[0].name : '',
+    )
+  }
 
   React.useEffect(() => {
     console.tron.log('Form: ', formValue)
@@ -318,16 +274,32 @@ export default function CustomerAddForm() {
             </Select>
           )}
         />
-        <Autocomplete
-          label="Favorite Animal"
-          placeholder="Search an animal"
+        {/* <Autocomplete
+          label="Quem indicou este cliente?"
+          placeholder="Busque pelo nome..."
           className="w-full"
-          defaultItems={animals}
+          defaultItems={!isLoading && data ? data : []}
+          isLoading={isLoading}
+          isDisabled={isLoading}
+          onSelectionChange={(value: React.Key | null) => {
+            const whoIndicate = data?.filter(
+              (item) => item.id === String(value),
+            )
+            setValue(
+              'whoIndicate',
+              whoIndicate && whoIndicate?.length > 0 ? whoIndicate[0].name : '',
+            )
+          }}
         >
           {(item) => (
-            <AutocompleteItem key={item.value}>{item.label}</AutocompleteItem>
+            <AutocompleteItem key={item.id}>{item.name}</AutocompleteItem>
           )}
-        </Autocomplete>
+        </Autocomplete> */}
+        <AutocompleteCustom
+          isLoading={isLoading}
+          data={data}
+          handleAutocompleteCustom={handleAutocompleteCustom}
+        />
         <Button
           type="submit"
           color="primary"
