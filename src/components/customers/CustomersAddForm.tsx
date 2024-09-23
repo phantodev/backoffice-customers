@@ -24,6 +24,7 @@ import updateCustomer from '@/actions/customers/updateCustomer'
 import { getAllCustomers } from '@/actions/customers/getAllCustomers'
 import createCustomerSupabase from '@/actions/customers/createCustomerSupabase'
 import AutocompleteCustom from '../common/AutcompleteCustom'
+import AvatarImage from './AvatarImage'
 
 export default function CustomerAddForm() {
   const customerStore = useCustomerStore()
@@ -153,6 +154,10 @@ export default function CustomerAddForm() {
     )
   }
 
+  const handleImageSelected = (file: File) => {
+    console.log(file)
+  }
+
   React.useEffect(() => {
     console.tron.log('Form: ', formValue)
   }, [formValue])
@@ -163,6 +168,9 @@ export default function CustomerAddForm() {
         onSubmit={handleSubmit(handleAddCustomer)}
         className="space-y-4 max-w-md mx-auto"
       >
+        <section className="flex justify-center">
+          <AvatarImage onImageSelected={handleImageSelected} />
+        </section>
         <div className="flex items-center space-x-2">
           <Switch {...register('active')} />
           <span>Ativo</span>

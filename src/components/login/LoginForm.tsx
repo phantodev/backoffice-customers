@@ -8,8 +8,10 @@ import React from 'react'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { login } from '@/actions/login/login'
+import { loginSupabase } from '@/actions/login/login'
 import { useRouter } from 'next/navigation'
+import { TStatus } from '@/interfaces/global'
+import '@/configs/reactotron'
 
 interface ILoginForm {
   email: string
@@ -35,6 +37,7 @@ const LoginSchema = z.object({
 export default function LoginForm() {
   const router = useRouter()
   const [showPassword, setShowPassword] = React.useState<boolean>(false)
+  const [status, setStatus] = React.useState<TStatus>('IDLE')
 
   const {
     register,
@@ -46,12 +49,21 @@ export default function LoginForm() {
 
   async function handleLogin(data: ILoginForm) {
     try {
-      const response = await login(data.email, data.password)
-      localStorage.setItem('tokenCustomers', response.token)
-      router.push('/dashboard/customers/')
-      console.log(response)
+      setStatus('LOADING')
+      console.tron.log('TESTE')
+      const response = await loginSupabase(data.email, data.password)
+      //       localStorage.setItem('tokenCustomers', response.token)
+      //       router.push('/dashboard/customers/')
+      //       console.log(response)
+      if (response.session) {
+        router.replace('/dashboard/customers/')
+      } else {
+        throw new Error('Falha ao criar sessão')
+      }
     } catch (error) {
       console.log(error)
+    } finally {
+      setStatus('IDLE')
     }
     console.log('Data para API: ', data)
   }
@@ -93,8 +105,14 @@ export default function LoginForm() {
               </Button>
             }
           />
-          <Button type="submit" size="lg" fullWidth>
-            Fazer login
+          <Button
+            type="submit"
+            size="lg"
+            fullWidth
+            isLoading={status === 'LOADING'}
+            isDisabled={status === 'LOADING'}
+          >
+            {status === 'LOADING' ? '' : 'Fazer login'}
           </Button>
         </form>
         <Button

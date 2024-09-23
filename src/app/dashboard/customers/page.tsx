@@ -1,6 +1,6 @@
 'use client'
 
-import CustomersTableList from '@/components/customers/CustomersTableList'
+import CustomersTableListSupabase from '@/components/customers/CustomersTableListSupabase'
 import { useCustomerStore } from '@/stores/customerStore'
 import { Button } from '@nextui-org/button'
 import { useRouter } from 'next/navigation'
@@ -22,7 +22,7 @@ export default function Customers() {
         </Button>
       </section>
       <section>
-        <CustomersTableList />
+        <CustomersTableListSupabase />
       </section>
     </section>
   )
