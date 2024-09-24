@@ -10,7 +10,7 @@ export default function RootLayout({
 }>) {
   return (
     <AuthWrapper>
-      <section className="w-full">
+      <section className="w-full flex flex-col">
         <section className="h-20 bg-zinc-800 w-full flex items-center justify-between px-4">
           <Image width={125} alt="Logo Nextjs" src="/assets/next-js.svg" />
           <NavBar />

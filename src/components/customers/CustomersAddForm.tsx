@@ -196,7 +196,12 @@ export default function CustomerAddForm() {
             name="avatar"
             control={control}
             rules={{ required: 'Campo Obrigatório' }}
-            render={() => <AvatarImage onImageSelected={handleImageSelected} />}
+            render={() => (
+              <AvatarImage
+                error={errors.avatar?.message}
+                onImageSelected={handleImageSelected}
+              />
+            )}
           />
         </section>
         <div className="flex items-center space-x-2">
