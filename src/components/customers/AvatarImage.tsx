@@ -37,6 +37,7 @@ const AvatarImage: React.FC<IAvatarImageProps> = ({ onImageSelected }) => {
       >
         {previewUrl ? (
           <Image
+            removeWrapper
             src={previewUrl}
             alt="Avatar"
             className="!w-full !h-full object-cover !max-w-full"

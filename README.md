@@ -1,8 +1,5 @@
-
-[global state] - CONTEXT API | ZUSTAND | REDUX
-
-[PAI]
-
-[FILHO]
-
-[NETO]
+ALTER TABLE storage.buckets DISABLE ROW LEVEL SECURITY;
+ALTER TABLE storage.objects DISABLE ROW LEVEL SECURITY;
+ALTER TABLE storage.migrations DISABLE ROW LEVEL SECURITY;
+ALTER TABLE storage.s3_multipart_uploads DISABLE ROW LEVEL SECURITY;
+ALTER TABLE storage.s3_multipart_uploads_parts DISABLE ROW LEVEL SECURITY;

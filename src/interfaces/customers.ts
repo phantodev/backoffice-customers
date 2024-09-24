@@ -11,6 +11,8 @@ export interface ICustomer {
   howMeet: string
   actions: string
   whoIndicate: string
+  avatar: File
+  avatarUrl: string
 }
 
 export interface IResultPaginated {

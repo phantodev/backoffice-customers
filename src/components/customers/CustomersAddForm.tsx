@@ -25,10 +25,12 @@ import { getAllCustomers } from '@/actions/customers/getAllCustomers'
 import createCustomerSupabase from '@/actions/customers/createCustomerSupabase'
 import AutocompleteCustom from '../common/AutcompleteCustom'
 import AvatarImage from './AvatarImage'
+import { supabase } from '@/configs/supabaseClient'
 
 export default function CustomerAddForm() {
   const customerStore = useCustomerStore()
   const queryClient = useQueryClient()
+  const [selectedImage, setSelectedImage] = React.useState<File | null>(null)
   const {
     register,
     handleSubmit,
@@ -108,8 +110,24 @@ export default function CustomerAddForm() {
       if (customerStore.customer) {
         await updateCustomer(customerStore.customer.id, data)
       } else {
-        // await createCustomer(data)
-        await createCustomerSupabase(data)
+        if (selectedImage) {
+          const { data: uploadImage, error: uploadError } =
+            await supabase.storage
+              .from('customers')
+              .upload(`${Date.now()}_${selectedImage?.name}`, selectedImage)
+          if (uploadError) {
+            throw new Error('Erro ao fazer upload')
+          }
+
+          const { data: publicUrlData } = supabase.storage
+            .from('customers')
+            .getPublicUrl(uploadImage.path)
+
+          // await createCustomer(data)
+          Reflect.deleteProperty(data, 'avatar')
+          data.avatarUrl = publicUrlData.publicUrl
+          await createCustomerSupabase(data)
+        }
       }
     },
     onSuccess: () => {
@@ -155,12 +173,17 @@ export default function CustomerAddForm() {
   }
 
   const handleImageSelected = (file: File) => {
-    console.log(file)
+    setValue('avatar', file)
+    setSelectedImage(file)
   }
 
   React.useEffect(() => {
     console.tron.log('Form: ', formValue)
   }, [formValue])
+
+  React.useEffect(() => {
+    console.log('Errors: ', errors)
+  }, [errors])
 
   return (
     <>
@@ -169,7 +192,12 @@ export default function CustomerAddForm() {
         className="space-y-4 max-w-md mx-auto"
       >
         <section className="flex justify-center">
-          <AvatarImage onImageSelected={handleImageSelected} />
+          <Controller
+            name="avatar"
+            control={control}
+            rules={{ required: 'Campo Obrigatório' }}
+            render={() => <AvatarImage onImageSelected={handleImageSelected} />}
+          />
         </section>
         <div className="flex items-center space-x-2">
           <Switch {...register('active')} />
@@ -196,6 +224,7 @@ export default function CustomerAddForm() {
         <Controller
           name="cpf"
           control={control}
+          rules={{ required: 'Campo Obrigatório' }}
           render={({ field }) => (
             <Input
               {...field}
@@ -232,6 +261,7 @@ export default function CustomerAddForm() {
         <Controller
           name="address"
           control={control}
+          rules={{ required: 'Campo Obrigatório' }}
           render={({ field }) => (
             <Input
               {...field}
@@ -245,6 +275,7 @@ export default function CustomerAddForm() {
         <Controller
           name="state"
           control={control}
+          rules={{ required: 'Campo Obrigatório' }}
           render={({ field }) => (
             <Input
               {...field}
