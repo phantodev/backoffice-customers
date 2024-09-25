@@ -3,17 +3,23 @@
 import React, { ChangeEvent } from 'react'
 import { Image } from '@nextui-org/image'
 import clsx from 'clsx'
+import { Spinner } from '@nextui-org/spinner'
 
 interface IAvatarImageProps {
   onImageSelected: (file: File) => void
   error: string | undefined
+  avatarUrl: string | undefined
 }
 
 const AvatarImage: React.FC<IAvatarImageProps> = ({
   onImageSelected,
   error,
+  avatarUrl,
 }) => {
-  const [previewUrl, setPreviewUrl] = React.useState<string | null>(null)
+  const [previewUrl, setPreviewUrl] = React.useState<string | null>(
+    avatarUrl || null,
+  )
+  const [isAvatarLoading, setIsAvatarLoading] = React.useState<boolean>(true)
 
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
@@ -26,6 +32,12 @@ const AvatarImage: React.FC<IAvatarImageProps> = ({
       onImageSelected(file)
     }
   }
+
+  //   React.useEffect(() => {
+  //     if (avatarUrl) {
+  //       onImageSelected(avatarUrl)
+  //     }
+  //   }, [avatarUrl])
 
   return (
     <section className="w-[200px] h-[200px] rounded-full overflow-hidden relative">
@@ -41,12 +53,20 @@ const AvatarImage: React.FC<IAvatarImageProps> = ({
         className="w-full h-full block cursor-pointer"
       >
         {previewUrl ? (
-          <Image
-            removeWrapper
-            src={previewUrl}
-            alt="Avatar"
-            className="!w-full !h-full object-cover !max-w-full"
-          />
+          <>
+            {isAvatarLoading && (
+              <section className="w-full h-full flex justify-center items-center">
+                <Spinner size="lg" />
+              </section>
+            )}
+            <Image
+              removeWrapper
+              src={previewUrl}
+              alt="Avatar"
+              onLoad={() => setIsAvatarLoading(false)}
+              className="!w-full !h-full object-cover !max-w-full"
+            />
+          </>
         ) : (
           <section
             className={`${error ? 'bg-rose-200' : 'bg-gray-200'} w-full h-full flex items-center justify-center`}

@@ -11,7 +11,7 @@ export interface ICustomer {
   howMeet: string
   actions: string
   whoIndicate: string
-  avatar: File
+  avatar: File | string
   avatarUrl: string
 }
 

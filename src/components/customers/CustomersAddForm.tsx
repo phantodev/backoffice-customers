@@ -19,18 +19,21 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'react-toastify'
 import { useCustomerStore } from '@/stores/customerStore'
 import { TStatus } from '@/interfaces/global'
-import updateCustomer from '@/actions/customers/updateCustomer'
+// import updateCustomer from '@/actions/customers/updateCustomer'
 // import { Autocomplete, AutocompleteItem } from '@nextui-org/autocomplete'
 import { getAllCustomers } from '@/actions/customers/getAllCustomers'
 import createCustomerSupabase from '@/actions/customers/createCustomerSupabase'
 import AutocompleteCustom from '../common/AutcompleteCustom'
 import AvatarImage from './AvatarImage'
 import { supabase } from '@/configs/supabaseClient'
+import updateCustomerSupabase from '@/actions/customers/updateCustomerSupabase'
 
 export default function CustomerAddForm() {
   const customerStore = useCustomerStore()
   const queryClient = useQueryClient()
-  const [selectedImage, setSelectedImage] = React.useState<File | null>(null)
+  const [selectedImage, setSelectedImage] = React.useState<
+    File | string | null
+  >(customerStore.customer?.avatarUrl || null)
   const {
     register,
     handleSubmit,
@@ -52,6 +55,8 @@ export default function CustomerAddForm() {
       state: customerStore.customer ? customerStore.customer.state : '',
       cpf: customerStore.customer ? customerStore.customer.cpf : '',
       cep: customerStore.customer ? customerStore.customer.cep : '',
+      avatar: customerStore.customer ? customerStore.customer.avatarUrl : '',
+      avatarUrl: customerStore.customer ? customerStore.customer.avatarUrl : '',
     },
   })
   const [status, setStatus] = React.useState<TStatus>('IDLE')
@@ -107,14 +112,13 @@ export default function CustomerAddForm() {
   const mutation = useMutation({
     mutationFn: async (data: ICustomer) => {
       setStatus('LOADING')
-      if (customerStore.customer) {
-        await updateCustomer(customerStore.customer.id, data)
-      } else {
-        if (selectedImage) {
+      if (selectedImage) {
+        if (selectedImage instanceof File) {
           const { data: uploadImage, error: uploadError } =
             await supabase.storage
               .from('customers')
               .upload(`${Date.now()}_${selectedImage?.name}`, selectedImage)
+
           if (uploadError) {
             throw new Error('Erro ao fazer upload')
           }
@@ -123,27 +127,34 @@ export default function CustomerAddForm() {
             .from('customers')
             .getPublicUrl(uploadImage.path)
 
-          // await createCustomer(data)
-          Reflect.deleteProperty(data, 'avatar')
           data.avatarUrl = publicUrlData.publicUrl
+        }
+
+        // await createCustomer(data)
+        Reflect.deleteProperty(data, 'avatar')
+        if (customerStore.customer) {
+          await updateCustomerSupabase(customerStore.customer.id, data)
+        } else {
           await createCustomerSupabase(data)
         }
       }
     },
     onSuccess: () => {
-      reset()
-      setValue('cpf', '')
-      setValue('cep', '')
-      setValue('address', '')
-      setValue('state', '')
-      customerStore.setCustomer(null)
+      if (!customerStore.customer) {
+        reset()
+        setValue('cpf', '')
+        setValue('cep', '')
+        setValue('address', '')
+        setValue('state', '')
+        customerStore.setCustomer(null)
+      }
       toast.success(
         `Registro ${customerStore.customer ? 'atualizado' : 'inserido'}!`,
         {
           className: '!bg-success !text-white',
         },
       )
-      queryClient.refetchQueries({ queryKey: ['list-customers'] })
+      queryClient.refetchQueries({ queryKey: ['list-customers-supabase'] })
       //       queryClient.invalidateQueries({ queryKey: ['list-customers'] })
     },
     onError: (errors) => {
@@ -198,6 +209,7 @@ export default function CustomerAddForm() {
             rules={{ required: 'Campo Obrigatório' }}
             render={() => (
               <AvatarImage
+                avatarUrl={customerStore.customer?.avatarUrl}
                 error={errors.avatar?.message}
                 onImageSelected={handleImageSelected}
               />
