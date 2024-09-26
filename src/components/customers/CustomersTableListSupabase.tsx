@@ -22,6 +22,8 @@ import { useCustomerStore } from '@/stores/customerStore'
 import { useRouter } from 'next/navigation'
 import { getAllCustomersSupabase } from '@/actions/customers/getAllCustomersSupabase'
 import deleteCustomerSupabase from '@/actions/customers/deleteCustomerSupabase'
+import { motion, AnimatePresence } from 'framer-motion'
+import { DotLottieReact } from '@lottiefiles/dotlottie-react'
 
 type ColumnKey = keyof ICustomer
 
@@ -50,6 +52,7 @@ export default function CustomersTableListSupabase() {
   const queryClient = useQueryClient()
   const [status, setStatus] = React.useState<TStatus>('IDLE')
   const [filterValue, setFilterValue] = React.useState<string>('')
+  const [openSideBar, setOpenSidebar] = React.useState<boolean>(false)
   const { data, isLoading, error, isFetching } = useQuery<ICustomer[]>({
     queryKey: ['list-customers-supabase'],
     queryFn: () => getAllCustomersSupabase(),
@@ -83,8 +86,9 @@ export default function CustomersTableListSupabase() {
               <button
                 onClick={() => {
                   //   console.tron.log(customer)
-                  customerStore.setCustomer(item)
-                  router.push('/dashboard/customers/add')
+                  setOpenSidebar(true)
+                  //   customerStore.setCustomer(item)
+                  //   router.push('/dashboard/customers/add')
                 }}
               >
                 <PencilSimple size={20} />
@@ -104,13 +108,15 @@ export default function CustomersTableListSupabase() {
   //     console.tron.log(customerStore.customer)
   //   }, [customerStore])
 
-  const filteredData = React.useCallback(() => {
+  const filteredData = React.useMemo(() => {
+    console.log('DUDUDUD')
     return data?.filter((item: ICustomer) =>
-      item.name.toLowerCase().includes(filterValue.toLocaleLowerCase()),
+      item.name.toLowerCase().includes(filterValue.toLowerCase()),
     )
   }, [data, filterValue])
 
   const onSearchChange = React.useCallback((value: string) => {
+    console.log('TESTE')
     if (value) {
       setFilterValue(value)
     } else {
@@ -134,8 +140,16 @@ export default function CustomersTableListSupabase() {
     )
   }, [onSearchChange, filterValue])
 
+  React.useEffect(() => {
+    console.log('FILTER FOI ALTERADO')
+  }, [filterValue])
+
   if (isLoading) {
-    return <section>Carregando dados...</section>
+    return (
+      <section className="flex-1">
+        <DotLottieReact src="/spinner.json" loop autoplay />
+      </section>
+    )
   }
 
   if (error) {
@@ -144,6 +158,28 @@ export default function CustomersTableListSupabase() {
 
   return (
     <>
+      {/* <DotLottieReact src="/spinner.json" loop autoplay /> */}
+      <AnimatePresence>
+        {openSideBar && (
+          <>
+            <motion.section
+              initial={{ right: '-700px' }}
+              animate={{ right: 0 }}
+              exit={{ right: '-700px' }}
+              transition={{ duration: 0.2 }}
+              className="w-[700px] h-screen fixed top-0 right-0 bg-zinc-800 z-50"
+            ></motion.section>
+            <motion.section
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 1 }}
+              exit={{ opacity: 0 }}
+              className="bg-black/50 fixed w-screen h-screen top-0 left-0 z-40"
+              onClick={() => setOpenSidebar(false)}
+            ></motion.section>
+          </>
+        )}
+      </AnimatePresence>
       <section
         className={`${isFetching || status === 'LOADING' ? 'flex' : 'hidden'} fixed top-0 left-0 z-50 w-screen h-screen bg-black/50 justify-center items-center`}
       >
@@ -166,7 +202,7 @@ export default function CustomersTableListSupabase() {
               )}
             </TableHeader>
             <TableBody
-              items={filteredData()}
+              items={filteredData}
               emptyContent={
                 <section className="w-full flex justify-center">
                   <Image
