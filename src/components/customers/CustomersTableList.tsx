@@ -24,9 +24,17 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import { Pagination } from '@nextui-org/pagination'
 import { RadioGroup, Radio } from '@nextui-org/radio'
 
-type ColumnKey = keyof ICustomer
+// type ColumnKey = keyof ICustomer
 
-const columns: { key: ColumnKey; label: string }[] = [
+interface IColumnKey {
+  id: string
+  name: string
+  role: string
+  status: string
+  actions: string
+}
+
+const columns: { key: keyof IColumnKey; label: string }[] = [
   {
     key: 'name',
     label: 'NAME',
@@ -120,7 +128,7 @@ export default function CustomersTableList() {
   })
 
   const renderCell = React.useCallback(
-    (item: ICustomer, columnKey: keyof ICustomer) => {
+    (item: ICustomer, columnKey: keyof IColumnKey) => {
       const cellValue = item[columnKey]
       switch (columnKey) {
         case 'actions':
@@ -250,7 +258,7 @@ export default function CustomersTableList() {
                 <TableRow key={item.id}>
                   {(columnKey) => (
                     <TableCell>
-                      {renderCell(item, columnKey as ColumnKey)}
+                      {renderCell(item, columnKey as keyof IColumnKey)}
                     </TableCell>
                   )}
                 </TableRow>
