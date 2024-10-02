@@ -4,7 +4,7 @@ Este é um repositório público de um aplicativo fazer um CRUD SIMPLES de clien
 
 ## Importante para Recrutadores e Contratantes ⚠️
 
-**Por favor, note que este projeto serve principalmente como uma ferramenta de ensino para iniciantes em React.** As técnicas aplicadas aqui são intencionalmente básicas e não refletem necessariamente as melhores práticas profissionais de desenvolvimento. O foco está em proporcionar uma introdução acessível ao React e React Native para alunos sem experiência prévia.
+**Por favor, note que este projeto serve principalmente como uma ferramenta de ensino para iniciantes em React.** As técnicas aplicadas aqui são intencionalmente básicas e não refletem necessariamente as melhores práticas profissionais de desenvolvimento. O foco está em proporcionar uma introdução acessível ao React e NextJS para alunos sem experiência prévia.
 
 ## Começando
 
