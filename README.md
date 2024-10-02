@@ -1,4 +1,4 @@
-# Bem-vindo ao Aplicativo de Backoffice Customers 🛹
+# Bem-vindo ao Aplicativo de Backoffice Customers 😀
 
 Este é um repositório público de um aplicativo fazer um CRUD SIMPLES de clientes, desenvolvido com REACTJS/NEXTJS e criado como projeto educacional para a escola Elaborata.
 
